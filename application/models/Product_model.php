@@ -1,8 +1,6 @@
 <?php
 class Product_model extends CI_Model
 {
-
-
     public function insert($product_name, $product_price, $product_amount)
     {
         $data = array(
