@@ -43,4 +43,17 @@ class Product extends CI_Controller
 
         return true;
     }
+    public function Show_product()
+    {
+        $products = $this->Product_model->ShowProduct();
+        $data = [
+            'products' => $products
+
+        ];
+
+        $this->template->set('title', 'Show Product');
+        $this->template->load('template/light', 'Product/ShowProduct', $data);
+
+        return true;
+    }
 }
