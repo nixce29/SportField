@@ -35,12 +35,13 @@ class Product extends CI_Controller
     public function AddProduct_form()
     {
 
-        $product_name = $this->input->post("name");
-        $product_price = $this->input->post("price");
-        $product_amount = $this->input->post("amount");
+        //$product_data = $this->input->post("ProductDetails");
+        $product_name = $this->input->post("productName");
+        $product_price = $this->input->post("productPrice");
+        $product_amount = $this->input->post("productAmount");
 
         $this->Product_model->insert($product_name, $product_price, $product_amount);
-
+        // header("location:" . site_url("Product/Show_Product"));
         return true;
     }
     public function Show_product()
