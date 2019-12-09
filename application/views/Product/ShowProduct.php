@@ -30,9 +30,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="Product_Amount" class="col-sm-3 col-form-label">Amount</label>
+                                        <label for="Product_amount" class="col-sm-3 col-form-label">Amount</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="Product_Amount" placeholder="Input Product Amount" name='Product_Amount'>
+                                            <input type="text" class="form-control" id="Product_amount" placeholder="Input Product Amount" name='Product_amount'>
                                         </div>
                                     </div>
                                 </form>
@@ -82,7 +82,7 @@
     $('#Btn-id').click(function() {
         var productName = $('#Product_name').val();
         var productPrice = $('#Product_price').val();
-        var productAmount = $('#Product_Amount').val();
+        var productAmount = $('#Product_amount').val();
 
         var productDetails = {
             productName: productName,
@@ -93,7 +93,7 @@
         var saveData = $.ajax({
             type: "POST",
             url: "<?= site_url('/Product/AddProduct_form') ?>",
-            data: "productDetails",
+            data: productDetails,
             dataType: "text",
             success: function(resultData) {
                 alert('Add Product');

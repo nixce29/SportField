@@ -41,7 +41,7 @@ class Product extends CI_Controller
         $product_amount = $this->input->post("productAmount");
 
         $this->Product_model->insert($product_name, $product_price, $product_amount);
-        // header("location:" . site_url("Product/Show_Product"));
+        header("location:" . site_url("Product/Show_Product"));
         return true;
     }
     public function Show_product()
