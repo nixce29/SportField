@@ -18,4 +18,16 @@ class Product_model extends CI_Model
 
         return $query->result();
     }
+    public function editProduct($product_id, $product_name, $product_price, $product_amount)
+    {
+        $Edit = array(
+            'id' => $product_id,
+            'name' => $product_name,
+            'price'  => $product_price,
+            'amount'  => $product_amount
+        );
+        $this->db->where('id', $product_id);
+        $this->db->update('products', $Edit);
+        return true;
+    }
 }

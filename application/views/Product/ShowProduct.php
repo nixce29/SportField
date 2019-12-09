@@ -1,12 +1,18 @@
+<?php
+$index = 1;
+foreach ($products as $value) { ?>
+
+<?php }
+?>
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Product</h4>
                 <div class="text-center">
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Click for demo<i class="mdi mdi-play-circle ml-1"></i></button>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addProductModal">Add Product<i class="mdi mdi-play-circle ml-1"></i></button>
                 </div>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-md" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -40,10 +46,58 @@
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success" id="Btn-id">Add Product</button>
                                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Edit Product -->
+                <div class="modal fade" id="EditProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-md" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="forms-sample" action="<?= site_url('/product/Edit_product') ?>" method="POST">
+                                    <div class="form-group row">
+                                        <label>
+                                            <div class="col-sm-1">
+                                                <input type="hidden" class="form-control" id="editProduct_id" placeholder=" Input Product Amount" name='Product_id'>
+                                            </div>
+                                        </label>
+
+                                        <label for="editProduct_name" class="col-sm-3 col-form-label">Name</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="editProduct_name" placeholder=" Input product name" name='Product_name'>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="editProduct_price" class="col-sm-3 col-form-label">Price</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="editProduct_price" value="$price" placeholder=" Input Product price" name='Product_price'>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="editProduct_amount" class="col-sm-3 col-form-label">Amount</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="editProduct_amount" value="$amount" placeholder=" Input Product Amount" name='Product_amount'>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success" id="EditProductButton" onclick="submitEdit('<?= $value->id ?>','<?= $value->name ?>','<?= $value->price ?>','<?= $value->amount ?>')">Edit</button>
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Edit Product -->
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -54,6 +108,7 @@
                                         <th>Product Name</th>
                                         <th>Price</th>
                                         <th>Amount</th>
+                                        <th>Edit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,6 +121,11 @@
                                             <td><?php echo $value->name ?></td>
                                             <td><?php echo $value->price ?></td>
                                             <td><?php echo $value->amount ?></td>
+                                            <td>
+                                                <div class="text-left">
+                                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#EditProductModal" onclick="editProductButton('<?= $value->id ?>','<?= $value->name ?>','<?= $value->price ?>','<?= $value->amount ?>')">EditProduct<i class="mdi mdi-play-circle ml-1"></i></button>
+                                                </div>
+                                            </td>
                                         </tr>
                                     <?php }
                                     ?>
@@ -79,6 +139,43 @@
     </div>
 </div>
 <script>
+    function submitEdit(id, name, price, amount) {
+        var editProductId = $('#editProduct_id').val();
+        var editProductName = $('#editProduct_name').val();
+        var editProductPrice = $('#editProduct_price').val();
+        var editProductAmount = $('#editProduct_amount').val();
+
+        // var editProductId = $('#id').val();
+
+        var productEdits = {
+            editProductId: editProductId,
+            editProductName: editProductName,
+            editProductPrice: editProductPrice,
+            editProductAmount: editProductAmount
+        };
+        var editData = $.ajax({
+            type: "POST",
+            url: "<?= site_url('/Product/Edit_product') ?>",
+            data: productEdits,
+            dataType: "text",
+            success: function(resultData) {
+                alert('Edit finish');
+
+                location.reload();
+            }
+
+        });
+    }
+
+    function editProductButton(id, name, price, amount) {
+        console.log(id, name, price, amount)
+
+        var editProductId = $('#editProduct_id').val(id);
+        var editProductName = $('#editProduct_name').val(name);
+        var editProductPrice = $('#editProduct_price').val(price);
+        var editProductAmount = $('#editProduct_amount').val(amount);
+        return;
+    }
     $('#Btn-id').click(function() {
         var productName = $('#Product_name').val();
         var productPrice = $('#Product_price').val();
@@ -97,9 +194,14 @@
             dataType: "text",
             success: function(resultData) {
                 alert('Add Product');
+                $('#addProductModal').modal('hide');
+                $('#Product_name').val('');
+                $('#Product_price').val('');
+                $('#Product_amount').val('');
+                location.reload();
             }
-        });
 
+        });
     });
 
     $(document).ready(function() {

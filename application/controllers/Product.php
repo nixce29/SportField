@@ -41,7 +41,7 @@ class Product extends CI_Controller
         $product_amount = $this->input->post("productAmount");
 
         $this->Product_model->insert($product_name, $product_price, $product_amount);
-        header("location:" . site_url("Product/Show_Product"));
+        // header("location:" . site_url("Product/Show_Product"));
         return true;
     }
     public function Show_product()
@@ -55,6 +55,16 @@ class Product extends CI_Controller
         $this->template->set('title', 'Show Product');
         $this->template->load('template/light', 'Product/ShowProduct', $data);
 
+        return true;
+    }
+    public function Edit_product()
+    {
+        $product_id = $this->input->post("editProductId");
+        $product_name = $this->input->post("editProductName");
+        $product_price = $this->input->post("editProductPrice");
+        $product_amount = $this->input->post("editProductAmount");
+        $this->Product_model->editProduct($product_id, $product_name, $product_price, $product_amount);
+        // header("location:" . site_url("Product/Show_Product"));
         return true;
     }
 }
