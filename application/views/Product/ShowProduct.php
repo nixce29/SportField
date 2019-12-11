@@ -12,6 +12,7 @@ foreach ($products as $value) { ?>
                 <div class="text-center">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addProductModal">Add Product<i class="mdi mdi-play-circle ml-1"></i></button>
                 </div>
+                <!-- Add Product Modals -->
                 <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-md" role="document">
                         <div class="modal-content">
@@ -51,6 +52,7 @@ foreach ($products as $value) { ?>
                         </div>
                     </div>
                 </div>
+                <!-- End Add Product Modals -->
                 <!-- Edit Product -->
                 <div class="modal fade" id="EditProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-md" role="document">
@@ -64,12 +66,9 @@ foreach ($products as $value) { ?>
                             <div class="modal-body">
                                 <form class="forms-sample" action="<?= site_url('/product/Edit_product') ?>" method="POST">
                                     <div class="form-group row">
-                                        <label>
-                                            <div class="col-sm-1">
-                                                <input type="hidden" class="form-control" id="editProduct_id" placeholder=" Input Product Amount" name='Product_id'>
-                                            </div>
-                                        </label>
-
+                                        <!-- <div class="col-sm-1">
+                                            <input type="hidden" class="form-control" id="editProduct_id" placeholder=" Input Product Amount" name='Product_id'>
+                                        </div> -->
                                         <label for="editProduct_name" class="col-sm-3 col-form-label">Name</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control" id="editProduct_name" placeholder=" Input product name" name='Product_name'>
@@ -87,6 +86,9 @@ foreach ($products as $value) { ?>
                                             <input type="text" class="form-control" id="editProduct_amount" value="$amount" placeholder=" Input Product Amount" name='Product_amount'>
                                         </div>
                                     </div>
+                                    <div class="col-sm-1">
+                                        <input type="hidden" class="form-control" id="editProduct_id" placeholder=" Input Product Amount" name='Product_id'>
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -98,17 +100,35 @@ foreach ($products as $value) { ?>
                     </div>
                 </div>
                 <!-- End Edit Product -->
+                <!-- Delete Product -->
+                <div class="modal fade" id="DeleteProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-md" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-center" id="DeleteModalLabel">DELETE PRODUCT</h5>
+                                </button>
+                                <input type="hidden" id="deleteProduct_id">
+                                <input type="hidden" id="deleteProduct_name">
+                                <input type="hidden" id="deleteProduct_price">
+                                <input type="hidden" id="deleteProduct_amount">
+                                <button type="submit" class="btn btn-success" id="DeleteProductButton" onclick="submitDelete('<?= $value->id ?>','<?= $value->name ?>','<?= $value->price ?>','<?= $value->amount ?>')">Delete</button>
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ENd Delete Product -->
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
                             <table id="product_table" class="table">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>Product Name</th>
-                                        <th>Price</th>
-                                        <th>Amount</th>
-                                        <th>Edit</th>
+                                        <th class='text-center'>No.</th>
+                                        <th class='text-center'>Product Name</th>
+                                        <th class='text-center'>Price</th>
+                                        <th class='text-center'>Amount</th>
+                                        <th class='text-center'>Edit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -117,13 +137,14 @@ foreach ($products as $value) { ?>
                                     $index = 1;
                                     foreach ($products as $value) { ?>
                                         <tr>
-                                            <td><?php echo $index++ ?></td>
-                                            <td><?php echo $value->name ?></td>
-                                            <td><?php echo $value->price ?></td>
-                                            <td><?php echo $value->amount ?></td>
+                                            <td class='text-center'><?php echo $index++ ?></td>
+                                            <td class='text-center'><?php echo $value->name ?></td>
+                                            <td class='text-center'><?php echo $value->price ?></td>
+                                            <td class='text-center'><?php echo $value->amount ?></td>
                                             <td>
-                                                <div class="text-left">
-                                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#EditProductModal" onclick="editProductButton('<?= $value->id ?>','<?= $value->name ?>','<?= $value->price ?>','<?= $value->amount ?>')">EditProduct<i class="mdi mdi-play-circle ml-1"></i></button>
+                                                <div class="text-center">
+                                                    <button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#EditProductModal" onclick="editProductButton('<?= $value->id ?>','<?= $value->name ?>','<?= $value->price ?>','<?= $value->amount ?>')">EditProduct<i class="mdi mdi-play-circle ml-1"></i></button>
+                                                    <button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#DeleteProductModal" onclick="DeleteProductButton('<?= $value->id ?>','<?= $value->name ?>','<?= $value->price ?>','<?= $value->amount ?>')">Delete<i class="mdi mdi-play-circle ml-1"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -139,14 +160,47 @@ foreach ($products as $value) { ?>
     </div>
 </div>
 <script>
+    function submitDelete(id, name, price, amount) {
+        var deleteProductId = $('#deleteProduct_id').val();
+        var deleteProductName = $('#deleteProduct_name').val();
+        var deleteProductPrice = $('#deleteProduct_price').val();
+        var deleteProductAmount = $('#deleteProduct_amount').val();
+        var productDeletes = {
+            deleteProductId: deleteProductId,
+            deleteProductName: deleteProductName,
+            deleteProductPrice: deleteProductPrice,
+            deleteProductAmount: deleteProductAmount
+        };
+        var deleteData = $.ajax({
+            type: "POST",
+            url: "<?= site_url('/Product/Delete_product') ?>",
+            data: productDeletes,
+            dataType: "text",
+            success: function(resultData) {
+                alert('Delete finish');
+
+                location.reload();
+            }
+
+        });
+    }
+
+    function DeleteProductButton(id, name, price, amount) {
+        console.log(id, name, price, amount)
+
+        var deleteProductId = $('#deleteProduct_id').val(id);
+        var deleteProductName = $('#deleteProduct_name').val(name);
+        var deleteProductPrice = $('#deleteProduct_price').val(price);
+        var deleteProductAmount = $('#deleteProduct_amount').val(amount);
+        return;
+
+    }
+
     function submitEdit(id, name, price, amount) {
         var editProductId = $('#editProduct_id').val();
         var editProductName = $('#editProduct_name').val();
         var editProductPrice = $('#editProduct_price').val();
         var editProductAmount = $('#editProduct_amount').val();
-
-        // var editProductId = $('#id').val();
-
         var productEdits = {
             editProductId: editProductId,
             editProductName: editProductName,
@@ -175,6 +229,7 @@ foreach ($products as $value) { ?>
         var editProductPrice = $('#editProduct_price').val(price);
         var editProductAmount = $('#editProduct_amount').val(amount);
         return;
+
     }
     $('#Btn-id').click(function() {
         var productName = $('#Product_name').val();

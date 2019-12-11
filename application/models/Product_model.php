@@ -28,6 +28,20 @@ class Product_model extends CI_Model
         );
         $this->db->where('id', $product_id);
         $this->db->update('products', $Edit);
+
+        return true;
+    }
+    public function deleteProduct($product_id, $product_name, $product_price, $product_amount)
+    {
+        $Delete = array(
+            'id' => $product_id,
+            'name' => $product_name,
+            'price'  => $product_price,
+            'amount'  => $product_amount
+        );
+        $this->db->where('id', $product_id);
+        $this->db->delete('products');
+
         return true;
     }
 }

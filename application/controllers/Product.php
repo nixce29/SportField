@@ -20,17 +20,7 @@ class Product extends CI_Controller
     public function home()
     {
         $this->template->set('title', 'HOME');
-        $this->template->load('template/light', 'blank');
-    }
-    public function demo()
-    {
-        $this->template->set('title', 'demo');
-        $this->template->load('template/light', 'demo');
-    }
-    public function AddProduct()
-    {
-        $this->template->set('title', 'Add Product');
-        $this->template->load('template/light', 'Product/AddProduct');
+        $this->template->load('template/dark', 'blank');
     }
     public function AddProduct_form()
     {
@@ -53,8 +43,9 @@ class Product extends CI_Controller
         ];
 
         $this->template->set('title', 'Show Product');
-        $this->template->load('template/light', 'Product/ShowProduct', $data);
+        $this->template->load('template/dark', 'Product/ShowProduct', $data);
 
+        // var_dump(json_encode($data));
         return true;
     }
     public function Edit_product()
@@ -64,6 +55,16 @@ class Product extends CI_Controller
         $product_price = $this->input->post("editProductPrice");
         $product_amount = $this->input->post("editProductAmount");
         $this->Product_model->editProduct($product_id, $product_name, $product_price, $product_amount);
+        // header("location:" . site_url("Product/Show_Product"));
+        return true;
+    }
+    public function Delete_product()
+    {
+        $product_id = $this->input->post("deleteProductId");
+        $product_name = $this->input->post("deleteProductName");
+        $product_price = $this->input->post("deleteProductPrice");
+        $product_amount = $this->input->post("deleteProductAmount");
+        $this->Product_model->deleteProduct($product_id, $product_name, $product_price, $product_amount);
         // header("location:" . site_url("Product/Show_Product"));
         return true;
     }
