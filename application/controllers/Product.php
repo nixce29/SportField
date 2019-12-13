@@ -68,4 +68,20 @@ class Product extends CI_Controller
         // header("location:" . site_url("Product/Show_Product"));
         return true;
     }
+    public function get_all_products()
+    {
+
+        $products = $this->Product_model->ShowProduct();
+        //success
+        if ($products !== null) {
+            $return_data['data'] = $products;
+            $return_data['state'] = 1;
+        }
+        //fail
+        else {
+            $return_data['data'] = null;
+            $return_data['state'] = 0;
+        }
+        echo json_encode($return_data);
+    }
 }

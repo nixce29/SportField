@@ -129,13 +129,14 @@ foreach ($products as $value) { ?>
                                         <th class='text-center'>Price</th>
                                         <th class='text-center'>Amount</th>
                                         <th class='text-center'>Edit</th>
+                                        <th class='text-center'>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <?php
-                                    $index = 1;
-                                    foreach ($products as $value) { ?>
+                                    <!-- <?php
+                                            $index = 1;
+                                            foreach ($products as $value) { ?>
                                         <tr>
                                             <td class='text-center'><?php echo $index++ ?></td>
                                             <td class='text-center'><?php echo $value->name ?></td>
@@ -149,7 +150,7 @@ foreach ($products as $value) { ?>
                                             </td>
                                         </tr>
                                     <?php }
-                                    ?>
+                                    ?> -->
                                 </tbody>
                             </table>
                         </div>
@@ -160,6 +161,46 @@ foreach ($products as $value) { ?>
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+        $('#product_table').DataTable({
+            "ajax": {
+                "url": "<?php echo site_url('product/get_all_products') ?>",
+                "datasrc": "data",
+            },
+            "columns": [{
+                    "data": "id"
+                },
+                {
+                    "data": "name"
+                },
+                {
+                    "data": "price"
+                },
+                {
+                    "data": "amount"
+                },
+
+            ],
+            "columnDefs": [{
+                    "targets": 4,
+                    "data": "id",
+                    "render": function(data, type, row, meta) {
+                        editButton = `<button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#EditProductModal" onclick="editProductButton(${ data})">EditProduct<i class="mdi mdi-play-circle ml-1"></i></button>`
+                        return editButton;
+                    }
+                },
+                {
+                    "targets": 5,
+                    "data": "id",
+                    "render": function(data, type, row, meta) {
+                        deleteButton = `<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#deleteProductModal" onclick="deleteProductButton(${ data})">DeleteProduct<i class="mdi mdi-play-circle ml-1"></i></button>`
+                        return deleteButton;
+                    }
+                }
+            ]
+        });
+    });
+
     function submitDelete(id, name, price, amount) {
         var deleteProductId = $('#deleteProduct_id').val();
         var deleteProductName = $('#deleteProduct_name').val();
@@ -259,7 +300,7 @@ foreach ($products as $value) { ?>
         });
     });
 
-    $(document).ready(function() {
-        $('#product_table').DataTable();
-    });
+    // $(document).ready(function() {
+    //     $('#product_table').DataTable();
+    // });
 </script>

@@ -31,6 +31,7 @@ class Product_model extends CI_Model
 
         return true;
     }
+
     public function deleteProduct($product_id, $product_name, $product_price, $product_amount)
     {
         $Delete = array(

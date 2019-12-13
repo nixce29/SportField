@@ -80,6 +80,10 @@
                             <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
                             <span class="menu-title">Product</span>
                         </a>
+                        <a class="nav-link" href="<?= base_url('Users/ShowUsers') ?>">
+                            <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
+                            <span class="menu-title">Users Story</span>
+                        </a>
                     </li>
                 </ul>
             </nav>
